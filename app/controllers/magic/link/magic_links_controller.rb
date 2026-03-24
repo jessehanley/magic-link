@@ -58,8 +58,13 @@ module Magic
         end
 
         def redirect_url
-          configured_url = Magic::Link.redirect_url
-          configured_url.presence || main_app.root_path
+          configured_url = Magic::Link.redirect_url.to_s
+          return main_app.root_path if configured_url.blank?
+
+          # Only allow app-relative paths for post-request redirects.
+          return configured_url if configured_url.start_with?("/") && !configured_url.start_with?("//")
+
+          main_app.root_path
         end
     end
   end
