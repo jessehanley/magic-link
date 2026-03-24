@@ -15,6 +15,9 @@ module Magic
     mattr_accessor :after_sign_in_path
     @@after_sign_in_path = "root_path"
 
+    mattr_accessor :redirect_url
+    @@redirect_url = nil
+
     class << self
       def configure
         yield self

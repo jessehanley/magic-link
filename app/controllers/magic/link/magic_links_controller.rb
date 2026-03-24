@@ -11,7 +11,7 @@ module Magic
       def create
         @magic_link = MagicLink.new(permitted_params)
         @magic_link.send_login_instructions
-        redirect_to main_app.root_path, notice: "Check your email for a sign in link!"
+        redirect_to redirect_url, notice: "Check your email for a sign in link!"
       end
 
       def authenticate
@@ -55,6 +55,11 @@ module Magic
 
         def permitted_params
           params.fetch(:magic_link, {}).permit(:email)
+        end
+
+        def redirect_url
+          configured_url = Magic::Link.redirect_url
+          configured_url.presence || main_app.root_path
         end
     end
   end
